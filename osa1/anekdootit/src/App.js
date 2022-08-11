@@ -46,7 +46,6 @@ const App = () => {
   const [selected, setSelected] = useState(0)
 
   const selectRandom = () => {
-    console.log(selected)
     setSelected(Math.floor(Math.random() * anecdotes.length))
   }
 
