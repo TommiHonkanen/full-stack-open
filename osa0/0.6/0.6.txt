@@ -1,0 +1,14 @@
+title 0.6: Uusi muistiinpano
+
+note over selain:
+Käyttäjä lähettää lomakkeen
+end note
+note over selain:
+Selain suorittaa tapahtumankäsitellijän, joka estää 
+lomakkeen lähetyksen oletusarvoisen toiminnan, jonka 
+jälkeen se luo muistiinpanon, lisää sen muistiinpanojen 
+listalle ja renderöi uudestaan muistiinpanot näytölle
+end note
+selain->palvelin: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+palvelin->selain: STATUS: 201
+
