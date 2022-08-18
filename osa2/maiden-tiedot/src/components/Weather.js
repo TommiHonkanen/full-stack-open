@@ -24,7 +24,6 @@ const Weather = (props) => {
         axios
         .get(url)
         .then(response => {
-            console.log(response.data)
             setWeather(response.data)
         })
     }, [url])
