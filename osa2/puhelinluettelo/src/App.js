@@ -3,6 +3,7 @@ import axios from 'axios'
 import Filter from "./components/Filter.js"
 import PersonForm from "./components/PersonForm.js"
 import Persons from "./components/Persons.js"
+import peopleService from "./services/people.js"
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -11,10 +12,10 @@ const App = () => {
   const [newFilter, setNewFilter] = useState('')
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
+    peopleService
+      .getAll()
+      .then(initialPeople => {
+        setPersons(initialPeople)
       })
   }, [])
 
@@ -24,13 +25,44 @@ const App = () => {
     event.preventDefault()
 
     if (persons.some((person) => person.name === newName)) {
-      alert(`${newName} is already added to phonebook`)
+      changeNumber(newName, newNumber)
       return
     }
 
-    setPersons(persons.concat({ name: newName, number: newNumber }))
-    setNewName('')
-    setNewNumber('')
+    const personObject = {
+      name: newName,
+      number: newNumber
+    }
+
+    peopleService
+      .create(personObject)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+        setNewName('')
+        setNewNumber('')
+      })
+  }
+
+  const changeNumber = (name, number) => {
+    const person = persons.find(person => person.name === name)
+
+    if (window.confirm(`${person.name} is already added to the phonebook, replace the old number with a new one?`)) {
+      const changedPerson = {...person, number: number}
+      peopleService.update(person.id, changedPerson).then(returnedPerson => {
+        setPersons(persons.map(p => p.id !== person.id ? p : returnedPerson))
+        setNewName('')
+        setNewNumber('')
+      })
+    }
+  }
+
+  const deletePerson = (name) => {
+    const person = persons.find(person => person.name === name)
+
+    if (window.confirm(`Delete ${person.name} ?`)) {
+      peopleService.remove(person.id)
+      setPersons(persons.filter(p => p.name !== person.name))
+    }
   }
 
   const handleNameChange = (event) => {
@@ -52,7 +84,7 @@ const App = () => {
       <h1>add a new</h1>
       <PersonForm onSubmit={addPerson} newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      <Persons peopleToShow={peopleToShow}/>
+      <Persons peopleToShow={peopleToShow} delete={deletePerson}/>
     </div>
   )
 
