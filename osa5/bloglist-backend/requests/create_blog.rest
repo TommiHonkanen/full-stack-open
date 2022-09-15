@@ -1,0 +1,11 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjYzMWRmNGUwMDA4OGMyYmQ4NDFjZmEyZSIsImlhdCI6MTY2MjkxMTI4NiwiZXhwIjoxNjYyOTE0ODg2fQ.Qw_8Kokwu9ZQLpDpUAnaUZVXWnWWZt5tEpAGnltudRM
+
+{
+    "title": "4455555",
+    "author": "gfghhhhh",
+    "url": "234gffgd.com",
+    "likes": "6262",
+    "userId": "631df4e00088c2bd841cfa2e"
+}
